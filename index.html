@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!-- =====================================================================
+     TATENDA MAMVURA — PORTFOLIO
+     One file. No frameworks. Everything you need to learn is in here.
+
+     HOW A WEB PAGE IS BUILT (the 30-second version):
+     1. HTML  = the skeleton. What content exists and in what order.
+     2. CSS   = the skin. How that content looks (colours, spacing, fonts).
+     3. JS    = the muscles. Behaviour. This page barely needs any.
+
+     Read top to bottom. Every section has a comment explaining WHY,
+     not just what.
+===================================================================== -->
+<html lang="en">
+<head>
+  <!-- charset: tells the browser how to decode text. Always first. -->
+  <meta charset="UTF-8" />
+
+  <!-- viewport: without this line, phones render the page zoomed-out
+       like a desktop screenshot. This is THE mobile-friendly switch. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- This is what shows in the browser tab and in Google results. -->
+  <title>Tatenda Mamvura — ICT Technical Administrator</title>
+  <meta name="description" content="Networks, servers, and automation. ICT Technical Administrator at Triangle Limited, Zimbabwe." />
+
+  <!-- FONTS: pulled from Google Fonts. Two families, two jobs:
+       IBM Plex Mono = headings/labels (the 'engineer' voice)
+       IBM Plex Sans = body text (easy to read in paragraphs) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =================================================================
+       CSS VARIABLES (a.k.a. custom properties)
+       Define your palette ONCE here, reuse everywhere with var(--name).
+       Change one hex value → whole site updates. This is how real
+       design systems work.
+       Palette logic: dark slate like switchgear metal, amber accent
+       like the link-light LEDs on a switch port.
+    ================================================================= */
+    :root {
+      --bg:      #10151c;   /* page background — deep slate, not pure black */
+      --panel:   #171e27;   /* slightly lighter surface for hover states */
+      --line:    #232c38;   /* hairline borders/dividers */
+      --text:    #d8dee6;   /* main text — off-white, easier than #fff */
+      --muted:   #808b98;   /* secondary text */
+      --amber:   #f0a63c;   /* the accent. Used sparingly = stays special */
+      --green:   #46c68b;   /* status-LED green, used exactly once */
+    }
+
+    /* RESET: browsers ship with inconsistent default margins/padding.
+       Zero everything, then add space back deliberately.
+       box-sizing: border-box makes width calculations sane —
+       padding counts INSIDE the width, not on top of it. */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; } /* anchor links glide, not jump */
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;      /* breathing room between lines of text */
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* LAYOUT: one centred column. max-width caps line length so
+       paragraphs stay readable (~70 characters). margin: auto centres.
+       This single rule IS the whole layout system of this page. */
+    .wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 24px;        /* side gutters so text never touches edges on phones */
+    }
+
+    /* =============== HEADER / HERO =============== */
+    header { padding: 96px 0 72px; }
+
+    /* The fake terminal prompt — the one memorable flourish.
+       Everything else on the page stays quiet on purpose. */
+    .prompt {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .prompt .path { color: var(--green); }
+
+    /* Blinking cursor: a CSS animation. @keyframes defines the frames,
+       'animation' applies them. 'steps(1)' makes it snap on/off like a
+       real terminal instead of fading. */
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 15px;
+      background: var(--muted);
+      vertical-align: middle;
+      animation: blink 1.1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    h1 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(30px, 6vw, 44px); /* clamp = fluid type: min, preferred, max.
+                                            Scales with screen width, never breaks. */
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+
+    .tagline {
+      font-size: 19px;
+      color: var(--muted);
+      max-width: 34ch; /* 'ch' unit = width of the 0 character. Handy for capping line length. */
+    }
+    .tagline strong { color: var(--text); font-weight: 500; }
+
+    /* =============== SECTIONS =============== */
+    section { padding: 40px 0; border-top: 1px solid var(--line); }
+
+    h2 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--amber);
+      margin-bottom: 24px;
+    }
+
+    /* =============== PROJECT LIST ===============
+       Not cards. A list with dividers — quieter, faster to scan.
+       Each project is an <article>: a semantic tag meaning
+       'self-contained piece of content'. Screen readers and Google
+       both understand it. */
+    .project { padding: 20px 0; }
+    .project + .project { border-top: 1px solid var(--line); }
+    /* '.project + .project' = 'a project that directly follows another
+       project'. Result: dividers BETWEEN items, none above the first. */
+
+    .project h3 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .project p { color: var(--muted); font-size: 15.5px; max-width: 60ch; }
+
+    .stack {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 8px;
+      opacity: 0.75;
+    }
+
+    /* =============== ABOUT =============== */
+    .about p { color: var(--muted); max-width: 60ch; }
+    .about p + p { margin-top: 14px; }
+    .about strong { color: var(--text); font-weight: 500; }
+
+    /* =============== LINKS ===============
+       Links get the amber accent + underline on hover only.
+       'transition' animates the colour change over 0.15s so it
+       feels responsive, not abrupt. */
+    a {
+      color: var(--amber);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    a:hover { color: var(--text); text-decoration: underline; }
+
+    /* Keyboard users tab through links; this outline shows them where
+       they are. Never remove focus styles — accessibility basics. */
+    a:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* =============== FOOTER =============== */
+    footer {
+      padding: 40px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+    .status {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    /* The one green dot on the whole page. */
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .contact { display: flex; gap: 22px; font-size: 15px; flex-wrap: wrap; }
+
+    /* =============== RESPONSIVE ===============
+       A media query: rules inside only apply when the condition is
+       true. Below 480px wide, shrink the top padding so the hero
+       doesn't eat the whole phone screen. */
+    @media (max-width: 480px) {
+      header { padding: 64px 0 48px; }
+    }
+
+    /* Respect users who've turned off animations in their OS
+       (vestibular disorders, battery saving). Quality-floor stuff. */
+    @media (prefers-reduced-motion: reduce) {
+      .cursor { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Everything lives inside .wrap so it's centred and width-capped. -->
+  <div class="wrap">
+
+    <header>
+      <p class="prompt"><span class="path">tatenda@triangle</span>:~$ whoami<span class="cursor"></span></p>
+      <h1>Tatenda Mamvura</h1>
+      <p class="tagline">ICT Technical Administrator. <strong>Networks, servers, automation</strong> — keeping industrial IT running in Zimbabwe's Lowveld.</p>
+    </header>
+
+    <section id="projects">
+      <h2>// projects</h2>
+
+      <article class="project">
+        <h3><a href="https://github.com/mamvurat/netrecon">netrecon</a></h3>
+        <p>Python network discovery tool. Sweeps subnets using multiple discovery methods and maps what's actually on the wire — because documentation lies and networks don't.</p>
+        <p class="stack">Python · scapy · industrial networks</p>
+      </article>
+
+      <article class="project">
+        <h3><a href="https://github.com/mamvurat/system-checks">Daily system checks suite</a></h3>
+        <p>PowerShell automation that audits servers, patch levels, and services every morning before anyone's had coffee. Turned a manual checklist into a report that writes itself.</p>
+        <p class="stack">PowerShell · Windows Server · scheduled tasks</p>
+      </article>
+
+      <article class="project">
+        <h3>Access-layer network rebuild</h3>
+        <p>Planned and deployed a full access-layer refresh on Aruba CX switching across an industrial site — new VLAN scheme, cleaner segmentation, fewer 2 a.m. phone calls.</p>
+        <p class="stack">Aruba CX · VLANs · enterprise + OT</p>
+      </article>
+    </section>
+
+    <section id="about" class="about">
+      <h2>// about</h2>
+      <p>Five years running industrial IT at <strong>Triangle Limited</strong> (Tongaat Hulett Zimbabwe) — an environment where enterprise networks meet OT and SCADA systems, and downtime has a very real cost measured in tonnes of sugar.</p>
+      <p>BCom Honours in Information Systems. AZ-900 certified. I automate the boring parts so I can focus on the interesting failures.</p>
+    </section>
+
+    <footer>
+      <p class="status"><span class="dot"></span>status: online — Triangle, Zimbabwe</p>
+      <nav class="contact">
+        <!-- Swap these hrefs for your real profiles.
+             'mailto:' opens the visitor's email app pre-addressed. -->
+        <a href="mailto:mamvurat24@gmail.com">email</a>
+        <a href="https://github.com/mamvurat">github</a>
+        <a href="https://www.linkedin.com/in/tatenda-mamvura-a984241a4">linkedin</a>
+      </nav>
+    </footer>
+
+  </div>
+</body>
+</html>
